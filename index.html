@@ -1,15 +1,90 @@
-<HTML>
-	<BODY onload="sin_titulo();">
-		<SCRIPT>
-			function sin_titulo() {
-				var gananciaquiniela, horasabiertas, horastrabajadas, minutosabiertos, minutostrabajados
-				horasabiertas = Number(prompt("¿Cuántas horas se abrió el almacén?"))
-				minutosabiertos = Number(prompt("¿Cuántas minutos se abrió el almacén?") / 60)
-				horastrabajadas = Number(prompt("¿Cuántas horas trabajaste?"))
-				minutostrabajados = Number(prompt("¿Cuántos minutos trabajaste?") / 60)
-				gananciaquiniela = Number(prompt("¿Cuánta ganancia se hizo de Quiniela?"))
-                alert("Tu ganancia de hoy es: $" + Math.round((horastrabajadas + minutostrabajados) * (19364 / 200) + (horastrabajadas + minutostrabajados) * gananciaquiniela / (horasabiertas + minutosabiertos)))
-			}
-		</SCRIPT>
-	</BODY>
-</HTML>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Calculadora de ganancia</title>
+	<style>
+		body{
+			background-image: url(media/hollow-knight-silksong-4k-wallpaper-154a.jpg);
+			background-size: cover;
+			background-position: center;
+			background-attachment: fixed;
+			color: white;
+		}
+		form{
+			position: absolute;
+			top: 25%;
+			left: 25%;
+			background: black;
+			opacity: 0.9;
+			border: 1px solid white;
+			border-radius: 5px;
+			width: fit-content;
+			padding: 10px;
+			zoom: 200%;
+		}
+		div{
+			margin: 10px;
+		}
+		p{
+			margin: 5px;
+		}
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button{
+			-webkit-appearance: none;
+		}
+		#ganancia{
+			font-size: x-large;
+		}
+
+		audio{
+			position: absolute;
+			bottom: 1%;
+			right: 1%;
+		}
+	</style>
+	<script>
+		function calculadoradeganancia(){
+			const sueldoporhora = 19364 / 200
+			let tiempoabierto = Number(document.getElementById("horasabiertas").value)
+			tiempoabierto += Number(document.getElementById("minutosabiertos").value / 60)
+			let tiempotrabajado = Number(document.getElementById("horastrabajadas").value)
+			tiempotrabajado += Number(document.getElementById("minutostrabajados").value / 60)
+			let quiniela = Number(document.getElementById("quiniela").value)
+			let ganancia = Math.round((tiempotrabajado * sueldoporhora) + (tiempotrabajado * quiniela) / tiempoabierto)
+			document.getElementById("ganancia").innerHTML = "Tu ganancia de hoy es: $" + ganancia
+		}
+		addEventListener("keypress", function(){
+			if(event.key === "Enter"){
+			document.getElementById("submit").click()
+		}
+		})
+	</script>
+</head>
+<body>
+	<form>
+		<div>
+			<p>¿Cuánto se abrió el almacén?</p>
+			<input type="number" id="horasabiertas" placeholder="Horas" autofocus>
+			<input type="number" id="minutosabiertos" placeholder="Minutos">
+		</div>
+		<div>
+			<p>¿Cuánto trabajaste?</p>
+			<input type="number" id="horastrabajadas" placeholder="Horas">
+			<input type="number" id="minutostrabajados" placeholder="Minutos">
+		</div>
+		<div>
+			<p>¿Cuánta ganancia se hizo de Quiniela?</p>
+			<input type="number" id="quiniela" placeholder="Ganancia">
+			<input type="submit" id="submit" onclick="event.preventDefault(), calculadoradeganancia()">
+			<input type="reset">
+		</div>
+		<div><p id="ganancia"></p></div>
+	</form>
+	<audio controls loop>
+		<source src="media/y2mate.com - Nightmare King Hollow Knight The Grimm Troupe.mp3">
+	</audio>
+</body>
+</html>
