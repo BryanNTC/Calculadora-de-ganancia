@@ -26,8 +26,6 @@
 			border: 1px solid white;
 			border-radius: 5px;
 			padding: 40px;
-			zoom: 1.5;
-
 		}
 
 		p {
@@ -54,7 +52,7 @@
 			let quiniela = Number(document.getElementById("quiniela").value)
 			let ganancia = Math.round((tiempotrabajado * sueldoporhora) + (tiempotrabajado * quiniela) / tiempoabierto)
 			document.getElementById("ganancia").innerHTML = "Tu ganancia de hoy es: $" + ganancia
-
+			document.querySelector("audio + audio").play()
 		}
 		addEventListener("keypress", function () {
 			if (event.key === "Enter") {
@@ -91,6 +89,9 @@
 	</form>
 	<audio controls autoplay loop>
 		<source src="media/y2mate.com - Nightmare King Hollow Knight The Grimm Troupe.mp3">
+	</audio>
+	<audio>
+		<source src="media/y2mate (mp3cut.net).mp3">
 	</audio>
 </body>
 
