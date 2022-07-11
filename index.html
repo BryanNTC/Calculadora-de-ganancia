@@ -4,7 +4,6 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Calculadora de ganancia</title>
 	<style>
 		body {
@@ -22,18 +21,26 @@
 			left: 50%;
 			transform: translate(-50%, -50%);
 			background: black;
-			opacity: 0.9;
 			border: 1px solid white;
+			opacity: 0.9;
 			border-radius: 5px;
 			padding: 40px;
 		}
 
-		p {
-			margin: 5px;
+		table,
+		table * {
+			border: 1px solid white;
+			font-size: 2vw;
+		}
+
+		th {
+			text-align: left;
 		}
 
 		#ganancia {
-			font-size: x-large;
+			display: none;
+			text-align: center;
+			font-size: 4vw;
 		}
 
 		audio {
@@ -51,7 +58,12 @@
 			tiempotrabajado += Number(document.getElementById("minutostrabajados").value / 60)
 			let quiniela = Number(document.getElementById("quiniela").value)
 			let ganancia = Math.round((tiempotrabajado * sueldoporhora) + (tiempotrabajado * quiniela) / tiempoabierto)
-			document.getElementById("ganancia").innerHTML = "Tu ganancia de hoy es: $" + ganancia
+			if (ganancia) {
+				document.getElementById("ganancia").innerHTML = "Tu ganancia de hoy es: $" + ganancia
+			} else {
+				document.getElementById("ganancia").innerHTML = "¡Error!"
+			}
+			document.getElementById("ganancia").style.display = "table-cell"
 			document.querySelector("audio + audio").play()
 		}
 		addEventListener("keypress", function () {
@@ -61,33 +73,44 @@
 		})
 		addEventListener("load", function () {
 			document.querySelector("audio").volume = .25
+			document.querySelector("audio").play()
 		})
 	</script>
 </head>
 
 <body>
 	<form>
-		<div>
-			<p>¿Cuánto se abrió el almacén?</p>
-			<input type="text" id="horasabiertas" placeholder="Horas" autofocus>
-			<input type="text" id="minutosabiertos" placeholder="Minutos">
-		</div>
-		<div>
-			<p>¿Cuánto trabajaste?</p>
-			<input type="text" id="horastrabajadas" placeholder="Horas">
-			<input type="text" id="minutostrabajados" placeholder="Minutos">
-		</div>
-		<div>
-			<p>¿Cuánta ganancia se hizo de Quiniela?</p>
-			<input type="text" id="quiniela" placeholder="Ganancia">
-			<input type="submit" id="submit" onclick="event.preventDefault(), calculadoradeganancia()">
-			<input type="reset">
-		</div>
-		<div>
-			<p id="ganancia"></p>
-		</div>
+		<table>
+			<tr>
+				<th colspan="100%">¿Cuánto se abrió el almacén?</th>
+			</tr>
+			<tr>
+				<td><input type="text" id="horasabiertas" placeholder="Horas" autofocus></td>
+				<td><input type="text" id="minutosabiertos" placeholder="Minutos"></td>
+			</tr>
+			<tr>
+				<th colspan="100%">¿Cuánto trabajaste?</th>
+			</tr>
+			<tr>
+				<td><input type="text" id="horastrabajadas" placeholder="Horas"></td>
+				<td><input type="text" id="minutostrabajados" placeholder="Minutos"></td>
+			</tr>
+			<tr>
+				<th colspan="100%">¿Cuánta ganancia se hizo de Quiniela?</th>
+			</tr>
+			<tr>
+				<td colspan="100%">
+					<input type="text" id="quiniela" placeholder="Ganancia">
+					<input type="submit" id="submit" onclick="event.preventDefault(), calculadoradeganancia()">
+					<input type="reset">
+				</td>
+			</tr>
+			<tr>
+				<th colspan="100%" id="ganancia"></th>
+			</tr>
+		</table>
 	</form>
-	<audio controls autoplay loop>
+	<audio controls>
 		<source src="media/y2mate.com - Nightmare King Hollow Knight The Grimm Troupe.mp3">
 	</audio>
 	<audio>
