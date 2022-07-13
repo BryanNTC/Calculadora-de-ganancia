@@ -16,7 +16,6 @@
 		}
 
 		form {
-			margin: 0;
 			position: absolute;
 			top: 50%;
 			left: 50%;
@@ -30,14 +29,26 @@
 		}
 
 		div * {
-			font-size: 2vw;
+			font-size: 25px;
+		}
+
+		/* Esto es por si no le gusta el reloj
+
+		input[type="time"]::-webkit-calendar-picker-indicator {
+			display: none;
+		}
+
+		*/
+
+		input[type="number"]::-webkit-inner-spin-button {
+			display: none;
 		}
 
 		#ganancia {
 			display: block;
 			visibility: hidden;
 			text-align: center;
-			font-size: 4vw;
+			font-size: 50px;
 		}
 
 		audio {
@@ -47,12 +58,13 @@
 		}
 
 		@media (orientation: portrait) {
-			form {
-				zoom: calc(100% * 4 / 3);
-			}
-
 			body {
 				background-image: url(media/SilksongPromo1.png);
+			}
+
+			form {
+				display: flex;
+				flex-direction: column;
 			}
 		}
 	</style>
@@ -83,16 +95,16 @@
 	<form>
 		<div>
 			<span>¿Cuánto se abrió el almacén?</span>
-			<input type="time" id="tiempoabierto" autofocus>
+			<input type="time" id="tiempoabierto" ondblclick="this.showPicker()">
 		</div>
 		<div>
 			<span>¿Cuánto trabajaste?</span>
-			<input type="time" id="tiempotrabajado">
+			<input type="time" id="tiempotrabajado" ondblclick="this.showPicker()">
 		</div>
 		<div>
 			<span>¿Cuánta ganancia se hizo de Quiniela?</span>
 			<br>
-			<input type="text" id="quiniela" placeholder="Ganancia">
+			<input type="number" id="quiniela" placeholder="Ganancia">
 			<input type="submit" id="submit" onclick="event.preventDefault(), calculadoradeganancia()">
 			<input type="reset">
 		</div>
