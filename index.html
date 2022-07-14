@@ -7,6 +7,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Calculadora de ganancia</title>
 	<style>
+		* {
+			box-sizing: border-box;
+		}
+
 		body {
 			background-image: url(media/SilksongPromo2.png);
 			background-repeat: round;
@@ -15,21 +19,24 @@
 			color: white;
 		}
 
-		form {
+		.contenedor {
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			background: black;
 			border: solid white;
-			opacity: 0.9;
+			opacity: 90%;
 			border-radius: 10px;
-			padding: 4vw;
+			padding: 30px;
 			width: fit-content;
+			display: grid;
+			align-content: center;
+			zoom: calc(100% * 5 / 3);
 		}
 
-		div * {
-			font-size: 25px;
+		.contenedor div {
+			margin: 10px;
 		}
 
 		/* Esto es por si no le gusta el reloj
@@ -45,16 +52,15 @@
 		}
 
 		#ganancia {
-			display: block;
-			visibility: hidden;
+			display: none;
 			text-align: center;
-			font-size: 50px;
+			font-size: 25px;
 		}
 
 		audio {
 			position: fixed;
-			bottom: 1%;
-			right: 1%;
+			bottom: 1px;
+			right: 1px;
 		}
 
 		@media (orientation: portrait) {
@@ -62,17 +68,16 @@
 				background-image: url(media/SilksongPromo1.png);
 			}
 
-			form {
-				display: flex;
-				flex-direction: column;
+			.contenedor {
+				zoom: 100%;
 			}
 		}
 	</style>
 	<script>
-		function calculadoradeganancia() {
+		function calculadoraDeGanancia() {
 			const sueldoporhora = 19364 / 200
-			let tiempoabierto = document.getElementById("tiempoabierto").valueAsNumber / (3.6 * Math.pow(10, 6))
-			let tiempotrabajado = document.getElementById("tiempotrabajado").valueAsNumber / (3.6 * Math.pow(10, 6))
+			let tiempoabierto = document.getElementById("tiempoAbierto").valueAsNumber / (3.6 * Math.pow(10, 6))
+			let tiempotrabajado = document.getElementById("tiempoTrabajado").valueAsNumber / (3.6 * Math.pow(10, 6))
 			let quiniela = document.getElementById("quiniela").value
 			let ganancia = Math.round((tiempotrabajado * sueldoporhora) + (tiempotrabajado * quiniela) / tiempoabierto)
 			if (ganancia) {
@@ -80,40 +85,42 @@
 			} else {
 				document.getElementById("ganancia").innerHTML = "¡Error!"
 			}
-			document.getElementById("ganancia").style.visibility = "visible"
-			new Audio("media/y2mate (mp3cut.net).mp3").play()
+			document.getElementById("ganancia").style.display = "block"
 		}
-		addEventListener("keypress", function () {
-			if (event.key === "Enter") {
-				document.getElementById("submit").click()
-			}
-		})
+		let x = 0
+		function hornetSounds() {
+			const sonidos = [new Audio("media/ediro.mp3"), new Audio("media/egale.mp3"), new Audio("media/gitgud.mp3")]
+			sonidos[Math.floor(Math.random() * sonidos.length)].play()
+		}
 	</script>
 </head>
 
 <body>
-	<form>
-		<div>
-			<span>¿Cuánto se abrió el almacén?</span>
-			<input type="time" id="tiempoabierto" ondblclick="this.showPicker()">
-		</div>
-		<div>
-			<span>¿Cuánto trabajaste?</span>
-			<input type="time" id="tiempotrabajado" ondblclick="this.showPicker()">
-		</div>
-		<div>
-			<span>¿Cuánta ganancia se hizo de Quiniela?</span>
-			<br>
-			<input type="number" id="quiniela" placeholder="Ganancia">
-			<input type="submit" id="submit" onclick="event.preventDefault(), calculadoradeganancia()">
-			<input type="reset">
-		</div>
-		<div>
-			<span id="ganancia"></span>
-		</div>
-	</form>
+	<div class="contenedor">
+		<form>
+			<div>
+				<span>¿Cuánto se abrió el almacén?</span>
+				<input type="time" id="tiempoAbierto" ondblclick="this.showPicker()">
+			</div>
+			<div>
+				<span>¿Cuánto trabajaste?</span>
+				<input type="time" id="tiempoTrabajado" ondblclick="this.showPicker()">
+			</div>
+			<div>
+				<span>¿Cuánta ganancia se hizo de Quiniela?</span>
+				<br>
+				<input type="number" id="quiniela" placeholder="Ganancia">
+			</div>
+			<div>
+				<input type="submit" id="submit"
+					onclick="event.preventDefault(), calculadoraDeGanancia(), hornetSounds()">
+				<input type="reset">
+			</div>
+		</form>
+		<strong id="ganancia"></strong>
+	</div>
 	<audio controls>
-		<source src="media/y2mate.com - Nightmare King Hollow Knight The Grimm Troupe.mp3">
+		<source src="media/Nightmare King Hollow Knight The Grimm Troupe.mp3">
 	</audio>
 </body>
 
