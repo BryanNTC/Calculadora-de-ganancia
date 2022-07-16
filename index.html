@@ -30,22 +30,21 @@
 			border-radius: 10px;
 			padding: 30px;
 			width: fit-content;
-			display: grid;
-			align-content: center;
 			zoom: calc(100% * 5 / 3);
+			max-width: 90%;
 		}
 
 		.contenedor div {
 			margin: 10px;
 		}
 
-		/* Esto es por si no le gusta el reloj
+		input[type="time"] {
+			padding: 1px;
+		}
 
 		input[type="time"]::-webkit-calendar-picker-indicator {
 			display: none;
 		}
-
-		*/
 
 		input[type="number"]::-webkit-inner-spin-button {
 			display: none;
@@ -54,7 +53,7 @@
 		#ganancia {
 			display: none;
 			text-align: center;
-			font-size: 25px;
+			font-size: 22px;
 		}
 
 		audio {
@@ -70,6 +69,16 @@
 
 			.contenedor {
 				zoom: 100%;
+			}
+
+			.contenedor :not(.botones, .botones *) {
+				display: grid;
+				justify-items: center;
+			}
+
+			span {
+				font-size: 6vw;
+				text-align: center;
 			}
 		}
 	</style>
@@ -87,10 +96,20 @@
 			}
 			document.getElementById("ganancia").style.display = "block"
 		}
-		let x = 0
+		const sonidos = [new Audio("media/garava.mp3"), new Audio("media/ediro.mp3"), new Audio("media/egale.mp3"), new Audio("media/gitgud.mp3")]
+		function randomNumberGenerator() {
+			return Math.floor(Math.random() * sonidos.length)
+		}
+		let num = randomNumberGenerator()
+		let numUsado
 		function hornetSounds() {
-			const sonidos = [new Audio("media/ediro.mp3"), new Audio("media/egale.mp3"), new Audio("media/gitgud.mp3")]
-			sonidos[Math.floor(Math.random() * sonidos.length)].play()
+			if (num !== numUsado) {
+				sonidos[num].play()
+				numUsado = num
+			} else {
+				num = randomNumberGenerator()
+				hornetSounds()
+			}
 		}
 	</script>
 </head>
@@ -108,13 +127,12 @@
 			</div>
 			<div>
 				<span>¿Cuánta ganancia se hizo de Quiniela?</span>
-				<br>
-				<input type="number" id="quiniela" placeholder="Ganancia">
-			</div>
-			<div>
-				<input type="submit" id="submit"
-					onclick="event.preventDefault(), calculadoraDeGanancia(), hornetSounds()">
-				<input type="reset">
+				<div class="botones">
+					<input type="number" id="quiniela" placeholder="Ganancia">
+					<br>
+					<input type="submit" onclick="event.preventDefault(), calculadoraDeGanancia(), hornetSounds()">
+					<input type="reset" onclick="hornetSounds()">
+				</div>
 			</div>
 		</form>
 		<strong id="ganancia"></strong>
