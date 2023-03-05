@@ -1,158 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Calculadora de ganancia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Calculadora de ganancia</title>
-	<style>
-		* {
-			box-sizing: border-box;
-		}
+      body {
+        background-image: url(media/SilksongPromo2.png);
+        background-repeat: round;
+        background-size: cover;
+        background-attachment: fixed;
+        color: white;
+      }
+      .contenedor {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 100px);
+      }
+      .contenedor div {
+        margin: 10px;
+      }
 
-		body {
-			background-image: url(media/SilksongPromo2.png);
-			background-repeat: round;
-			background-size: cover;
-			background-attachment: fixed;
-			color: white;
-		}
+      form {
+        background: black;
+        border: solid white;
+        opacity: 90%;
+        border-radius: 10px;
+        padding: 30px;
+        width: fit-content;
+        zoom: calc(100% * 5 / 3);
+        max-width: 90%;
+      }
 
-		.contenedor {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			background: black;
-			border: solid white;
-			opacity: 90%;
-			border-radius: 10px;
-			padding: 30px;
-			width: fit-content;
-			zoom: calc(100% * 5 / 3);
-			max-width: 90%;
-		}
+      input[type="time"] {
+        padding: 1px;
+      }
 
-		.contenedor div {
-			margin: 10px;
-		}
+      input[type="time"]::-webkit-calendar-picker-indicator {
+        display: none;
+      }
 
-		input[type="time"] {
-			padding: 1px;
-		}
+      input[type="number"]::-webkit-inner-spin-button {
+        display: none;
+      }
 
-		input[type="time"]::-webkit-calendar-picker-indicator {
-			display: none;
-		}
+      #ganancia {
+        text-align: center;
+        font-size: 22px;
+      }
 
-		input[type="number"]::-webkit-inner-spin-button {
-			display: none;
-		}
+      audio {
+        position: fixed;
+        bottom: 1px;
+        right: 1px;
+      }
 
-		#ganancia {
-			text-align: center;
-			font-size: 22px;
-		}
+      @media (orientation: portrait) {
+        body {
+          background-image: url(media/SilksongPromo1.png);
+        }
 
-		audio {
-			position: fixed;
-			bottom: 1px;
-			right: 1px;
-		}
+        .contenedor {
+          zoom: 100%;
+        }
 
-		@media (orientation: portrait) {
-			body {
-				background-image: url(media/SilksongPromo1.png);
-			}
+        .contenedor :not(.botones, .botones *) {
+          display: grid;
+          justify-items: center;
+        }
 
-			.contenedor {
-				zoom: 100%;
-			}
-
-			.contenedor :not(.botones, .botones *) {
-				display: grid;
-				justify-items: center;
-			}
-
-			span {
-				font-size: 6vw;
-				text-align: center;
-			}
-		}
-	</style>
-</head>
-
-<body>
-	<div class="contenedor">
-		<form>
-			<div>
-				<span>¿Cuánto se abrió el almacén?</span>
-				<input type="time" id="tiempoAbierto" ondblclick="this.showPicker()">
-			</div>
-			<div>
-				<span>¿Cuánto trabajaste?</span>
-				<input type="time" id="tiempoTrabajado" ondblclick="this.showPicker()">
-			</div>
-			<div>
-				<span>¿Cuánta ganancia se hizo de Quiniela?</span>
-				<div class="botones">
-					<input type="number" id="quiniela" placeholder="Ganancia">
-					<br>
-					<input type="submit" onclick="event.preventDefault(), calculadoraDeGanancia(), hornetSounds()">
-					<input type="reset" onclick="hornetSounds()">
-				</div>
-			</div>
-		</form>
-	</div>
-	<audio controls>
-		<source src="media/Nightmare King Hollow Knight The Grimm Troupe.mp3">
-	</audio>
-	<script>
-		function calculadoraDeGanancia() {
-			function calcularHoras(x) {
-				const [horas, minutos] = x.split(":");
-				return parseInt(horas) + parseInt(minutos) / 60;
-			}
-			const sueldoPorHora = 21107 / 200;
-			const tiempoAbierto = calcularHoras(document.getElementById("tiempoAbierto").value);
-			const tiempoTrabajado = calcularHoras(document.getElementById("tiempoTrabajado").value);
-			const quiniela = parseInt(document.getElementById("quiniela").value);
-			const ganancia = Math.round(tiempoTrabajado * sueldoPorHora + (tiempoTrabajado * quiniela) / tiempoAbierto);
-			let mostrarGanancia = document.getElementById("ganancia");
-			if (!mostrarGanancia) {
-				mostrarGanancia = document.createElement("strong");
-				mostrarGanancia.setAttribute("id", "ganancia");
-				document.querySelector("form").appendChild(mostrarGanancia);
-			}
-			if (ganancia) {
-				mostrarGanancia.innerText = "Tu ganancia de hoy es: $" + ganancia;
-			} else {
-				mostrarGanancia.innerText = "¡Error!";
-			} // console.log(tiempoAbierto + " Tiempo abierto\n", tiempoTrabajado + " Tiempo trabajado\n", quiniela + " Quiniela\n", ganancia + " Ganancia")
-		}
-		const sonidos = [new Audio("media/garava.mp3"),
-		new Audio("media/ediro.mp3"),
-		new Audio("media/egale.mp3"),
-		new Audio("media/gitgud.mp3")
-		];
-		function randomNumberGenerator() {
-			return Math.floor(Math.random() * sonidos.length);
-		}
-		const rng = [{
-			num: randomNumberGenerator(),
-			numUsado: null
-		}];
-		function hornetSounds() {
-			if (rng.num !== rng.numUsado) {
-				sonidos[rng.num].play();
-				rng.numUsado = rng.num;
-			} else {
-				rng.num = randomNumberGenerator();
-				hornetSounds();
-			}
-		}
-	</script>
-</body>
-
+        span {
+          font-size: 6vw;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="contenedor">
+      <form>
+        <div>
+          <span>¿Cuánto se abrió el almacén?</span>
+          <input type="time" id="tiempoAbierto" />
+        </div>
+        <div>
+          <span>¿Cuánto trabajaste?</span>
+          <input type="time" id="tiempoTrabajado" />
+        </div>
+        <div>
+          <span>¿Cuánta ganancia se hizo de Quiniela?</span>
+          <div class="botones">
+            <input type="number" id="quiniela" placeholder="Ganancia" />
+            <br />
+            <input type="submit" onclick="event.preventDefault(), calculadoraDeGanancia(), hornetSounds()" />
+            <input type="reset" onclick="hornetSounds()" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <audio src="media/Nightmare King Hollow Knight The Grimm Troupe.mp3" controls></audio>
+    <script>
+      function calculadoraDeGanancia() {
+        function calcularHoras(valor) {
+          const [horas, minutos] = valor.split(":");
+          return parseInt(horas) + parseInt(minutos) / 60;
+        }
+        const sueldoPorHora = 21107 / 200;
+        const tiempoAbierto = calcularHoras(document.getElementById("tiempoAbierto").value);
+        const tiempoTrabajado = calcularHoras(document.getElementById("tiempoTrabajado").value);
+        const quiniela = parseInt(document.getElementById("quiniela").value);
+        const ganancia = Math.round(tiempoTrabajado * (sueldoPorHora + quiniela / tiempoAbierto));
+        let mostrarGanancia = document.getElementById("ganancia");
+        if (!mostrarGanancia) {
+          mostrarGanancia = document.createElement("strong");
+          mostrarGanancia.setAttribute("id", "ganancia");
+          document.querySelector("form").appendChild(mostrarGanancia);
+        }
+        if (ganancia) {
+          mostrarGanancia.innerText = "Tu ganancia de hoy es: $" + ganancia;
+        } else {
+          mostrarGanancia.innerText = "¡Error!";
+        }
+      }
+      const sonidos = [new Audio("media/garava.mp3"), new Audio("media/ediro.mp3"), new Audio("media/egale.mp3"), new Audio("media/gitgud.mp3")];
+      function randomNumberGenerator() {
+        return Math.floor(Math.random() * sonidos.length);
+      }
+      const rng = [
+        {
+          num: randomNumberGenerator(),
+          numUsado: undefined,
+        },
+      ];
+      function hornetSounds() {
+        if (rng.num !== rng.numUsado) {
+          sonidos[rng.num].play();
+          rng.numUsado = rng.num;
+        } else {
+          rng.num = randomNumberGenerator();
+          hornetSounds();
+        }
+      }
+    </script>
+  </body>
 </html>
