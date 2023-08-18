@@ -10,13 +10,16 @@
         background-position: center;
         background-attachment: fixed;
       }
+      body * {
+        box-sizing: border-box;
+      }
       form {
         background-color: black;
         border: 0.5vh solid white;
         border-radius: 5mm;
         color: white;
         font-size: 3vh;
-        max-width: 50vw;
+        max-width: 75vw;
         opacity: 90%;
         overflow: auto;
         padding: 1cm;
@@ -26,25 +29,21 @@
         left: 50%;
         transform: translate(-50%, -50%);
       }
-      form div {
+      div {
         margin: 2mm 0;
       }
       input {
         font-size: 1em;
         max-width: 100%;
       }
-
       input[type="number"]::-webkit-inner-spin-button {
         display: none;
-      }
-      #ganancia {
-        font-weight: bold;
       }
       @media screen and (orientation: portrait) {
         body {
           background-image: url(media/SilksongPromo1.png);
         }
-        form > div:nth-child(4) {
+        div:nth-child(4) {
           display: flex;
           flex-direction: column;
         }
