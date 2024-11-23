@@ -3,21 +3,18 @@
   <head>
     <title>Calculadora de ganancia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
     <style>
       body {
-        background-image: url(media/SilksongPromo2.png);
+        background-image: url(http://cdn.wikimg.net/en/hkwiki/images/thumb/4/44/SilksongPromo2.png/1280px-SilksongPromo2.png);
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
-      }
-      body * {
-        box-sizing: border-box;
       }
       form {
         background-color: black;
         border: 0.5vh solid white;
         border-radius: 5mm;
-        color: white;
         font-size: 3vh;
         max-width: 75vw;
         opacity: 90%;
@@ -39,9 +36,9 @@
       input[type="number"]::-webkit-inner-spin-button {
         display: none;
       }
-      @media screen and (orientation: portrait) {
+      @media (orientation: portrait) {
         body {
-          background-image: url(media/SilksongPromo1.png);
+          background-image: url(http://cdn.wikimg.net/en/hkwiki/images/thumb/f/f8/SilksongPromo1.png/1024px-SilksongPromo1.png);
         }
         div:nth-child(4) {
           display: flex;
@@ -53,12 +50,12 @@
   <body>
     <form>
       <div>
-        ¿Cuánto tiempo se abrió el almacén?
-        <input type="time" id="tiempoAbierto" />
+        ¿Cuánto tiempo se abrió el almacén? (en horas y minutos, ej. 8:30)
+        <input type="text" id="tiempoAbierto" placeholder="hh:mm" />
       </div>
       <div>
-        ¿Cuánto tiempo trabajaste?
-        <input type="time" id="tiempoTrabajado" />
+        ¿Cuánto tiempo trabajaste? (en horas y minutos, ej. 5:45)
+        <input type="text" id="tiempoTrabajado" placeholder="hh:mm" />
       </div>
       <div>
         ¿Cuánta ganancia se hizo de Quiniela?
@@ -66,41 +63,45 @@
         <input type="number" id="quiniela" placeholder="Ganancia" />
       </div>
       <div>
-        <input type="submit" onclick="event.preventDefault(), calcularGanancia(), playHornetSounds()" />
+        <input type="submit" onclick="event.preventDefault(), calcularGanancia()" />
         <input type="reset" onclick="playHornetSounds()" />
       </div>
     </form>
     <script>
-      const sueldoPorHora = 22268 / 200;
+      const hornetSounds = ["garava", "ediro", "egale", "gitgud"].map((path) => new Audio(`media/${path}.mp3`));
+      let hornetSound, lastIndex;
+
+      function parseTime(timeString) {
+        const [hours, minutes] = timeString.split(":").map(Number);
+        return hours * 60 + minutes; // Convertir a minutos
+      }
+      function ganancia() {
+        const sueldoPorHora = 22268 / 200,
+          tiempoAbierto = parseTime(document.querySelector("#tiempoAbierto").value) / 60, // Convertir a horas
+          tiempoTrabajado = parseTime(document.querySelector("#tiempoTrabajado").value) / 60, // Convertir a horas
+          quiniela = document.querySelector("#quiniela").value;
+        return Math.round(tiempoTrabajado * (sueldoPorHora + quiniela / tiempoAbierto));
+      }
+      function playHornetSounds() {
+        if (!hornetSound || hornetSound.ended) {
+          let newIndex;
+          do newIndex = Math.floor(Math.random() * hornetSounds.length);
+          while (lastIndex === newIndex);
+          lastIndex = newIndex;
+          hornetSound = hornetSounds[newIndex];
+          hornetSound.play();
+        }
+      }
       function calcularGanancia() {
-        const tiempoAbierto = document.querySelector("#tiempoAbierto").valueAsNumber / 3.6e6;
-        const tiempoTrabajado = document.querySelector("#tiempoTrabajado").valueAsNumber / 3.6e6;
-        const quiniela = document.querySelector("#quiniela").value;
-        const ganancia = Math.round(tiempoTrabajado * (sueldoPorHora + quiniela / tiempoAbierto));
         let mostrarGanancia = document.querySelector("#ganancia");
         if (!mostrarGanancia) {
           mostrarGanancia = document.createElement("div");
-          mostrarGanancia.setAttribute("id", "ganancia");
+          mostrarGanancia.id = "ganancia";
           document.querySelector("form").appendChild(mostrarGanancia);
         }
-        if (ganancia) {
-          mostrarGanancia.innerText = `Tu ganancia de hoy es: $${ganancia}`;
-        } else {
-          mostrarGanancia.innerText = "¡Error!";
-        }
-      }
-      let lastIndex;
-      function playHornetSounds() {
-        const hornetSounds = [new Audio("media/garava.mp3"), new Audio("media/ediro.mp3"), new Audio("media/egale.mp3"), new Audio("media/gitgud.mp3")];
-        function randomIndex() {
-          return Math.floor(Math.random() * hornetSounds.length);
-        }
-        let newIndex = randomIndex();
-        while (newIndex === lastIndex) {
-          newIndex = randomIndex();
-        }
-        lastIndex = newIndex;
-        hornetSounds[newIndex].play();
+        if (ganancia()) mostrarGanancia.innerText = `Tu ganancia de hoy es: $${ganancia()}`;
+        else mostrarGanancia.innerText = "¡Error!";
+        playHornetSounds();
       }
     </script>
   </body>
