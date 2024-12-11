@@ -90,7 +90,7 @@
       function ganancia() {
         const sueldoPorHora = 22268 / 200,
           tiempoAbierto = parseTime(document.querySelector("#diaDeLaSemana").value),
-          tiempoTrabajado = document.querySelector("#horasTrabajadas").valueAsNumber + parseFloat(document.querySelector("#minutosTrabajados").valueAsNumber) / 60,
+          tiempoTrabajado = (document.querySelector("#horasTrabajadas").valueAsNumber || 0) + (parseFloat(document.querySelector("#minutosTrabajados").valueAsNumber) / 60 || 0),
           gananciaQuiniela = document.querySelector("#gananciaQuiniela").valueAsNumber || 0;
         return Math.round(tiempoTrabajado * (sueldoPorHora + gananciaQuiniela / tiempoAbierto));
       }
