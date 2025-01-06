@@ -51,15 +51,6 @@
   <body>
     <form>
       <div>
-        Día de la semana
-        <br />
-        <select id="diaDeLaSemana">
-          <option value="11:30">Lunes a Viernes</option>
-          <option value="9:30">Sábado</option>
-          <option value="8">Domingo</option>
-        </select>
-      </div>
-      <div>
         Tiempo trabajado
         <br />
         <input type="number" id="horasTrabajadas" placeholder="Horas" />
@@ -79,20 +70,11 @@
     <script>
       const hornetSounds = ["garava", "ediro", "egale", "gitgud"].map((path) => new Audio(`media/${path}.mp3`));
       let hornetSound, lastIndex;
-      function parseTime(timeString) {
-        if (timeString.includes(":")) {
-          const [hours, minutes] = timeString.split(":");
-          return parseFloat(hours) + parseFloat(minutes) / 60;
-        } else {
-          return parseFloat(timeString);
-        }
-      }
       function ganancia() {
         const sueldoPorHora = 23604 / 200,
-          tiempoAbierto = parseTime(document.querySelector("#diaDeLaSemana").value),
-          tiempoTrabajado = (document.querySelector("#horasTrabajadas").valueAsNumber || 0) + (parseFloat(document.querySelector("#minutosTrabajados").valueAsNumber) / 60 || 0),
+          tiempoTrabajado = (document.querySelector("#horasTrabajadas").valueAsNumber || 0) + (document.querySelector("#minutosTrabajados").valueAsNumber / 60 || 0),
           gananciaQuiniela = document.querySelector("#gananciaQuiniela").valueAsNumber || 0;
-        return Math.round(tiempoTrabajado * (sueldoPorHora + gananciaQuiniela / tiempoAbierto));
+        return Math.round(tiempoTrabajado * sueldoPorHora + gananciaQuiniela);
       }
       function playHornetSounds() {
         if (!hornetSound || hornetSound.ended) {
