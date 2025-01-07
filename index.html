@@ -74,7 +74,7 @@
         const sueldoPorHora = 23604 / 200,
           tiempoTrabajado = (document.querySelector("#horasTrabajadas").valueAsNumber || 0) + (document.querySelector("#minutosTrabajados").valueAsNumber / 60 || 0),
           gananciaQuiniela = document.querySelector("#gananciaQuiniela").valueAsNumber || 0;
-        return Math.round(tiempoTrabajado * sueldoPorHora + gananciaQuiniela);
+        if (tiempoTrabajado) return Math.round(tiempoTrabajado * sueldoPorHora + gananciaQuiniela);
       }
       function playHornetSounds() {
         if (!hornetSound || hornetSound.ended) {
